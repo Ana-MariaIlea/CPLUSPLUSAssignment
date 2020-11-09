@@ -18,6 +18,25 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="button.cpp" />
+    <ClCompile Include="character.cpp" />
+    <ClCompile Include="gameObject.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene.cpp" />
+    <ClCompile Include="sceneHandler.cpp" />
+    <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="textObject.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="button.hpp" />
+    <ClInclude Include="character.hpp" />
+    <ClInclude Include="gameObject.hpp" />
+    <ClInclude Include="scene.hpp" />
+    <ClInclude Include="sceneHandler.hpp" />
+    <ClInclude Include="sprite.hpp" />
+    <ClInclude Include="textObject.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{78201978-2CFE-4B9A-9821-7825108ECDDA}</ProjectGuid>
@@ -137,8 +156,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

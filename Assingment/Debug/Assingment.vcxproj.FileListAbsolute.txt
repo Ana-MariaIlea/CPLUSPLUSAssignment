@@ -1,0 +1,12 @@
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\Assingment.exe
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\Assingment.pdb
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\Assingment.vcxproj.CopyComplete
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\sfml-graphics-d-2.dll
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\sfml-window-d-2.dll
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\sfml-system-d-2.dll
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\freetyped.dll
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\zlibd1.dll
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\bz2d.dll
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\libpng16d.dll
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\brotlidec.dll
+D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\brotlicommon.dll
