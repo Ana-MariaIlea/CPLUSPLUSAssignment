@@ -36,3 +36,11 @@ void SceneHandler::stackScene(std::string sceneName) {
 void SceneHandler::popScene(void) {
     this->scenesStack.pop();
 }
+
+void SceneHandler::popAllScenes(void) {
+    for (size_t i = 0; i < this->scenesStack.size(); i++)
+    {
+        this->scenesStack.pop();
+    }
+
+}

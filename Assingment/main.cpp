@@ -12,8 +12,14 @@
 
 #include <functional>
 
-int main() {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "My assighnment");
+int main(int argc, char* argv[]) {
+
+	printf("%s\n", argv[0]);
+	int width = argc > 1 ? std::stoi(argv[1]) : 1280;
+	int height = argc > 2 ? std::stoi(argv[2]) : 720;
+	printf("%d\n", width);
+	printf("%d\n", height);
+	sf::RenderWindow window(sf::VideoMode(width, height), "My assighnment");
 
 
 	sf::Font font;
@@ -27,28 +33,24 @@ int main() {
 	bool isFight = false;;
 
 
-	Button backAScreen("backAScreen", font, "BACK", sf::Vector2f(192.5f, 50.0f), darkColor);
-	backAScreen.setPosition(sf::Vector2f(108.0f, 540.0f));
 
-	backAScreen.setButtonAction([&window]() {
-		window.close();
-		});
 	//---------------------------------------
 	Scene mainMenu("mainMenu");
 
 	Button playButton("playButton", font, "PLAY", sf::Vector2f(192.5f, 50.0f), darkColor);
 	playButton.setPosition(sf::Vector2f(508.0f, 540.0f));
 
-	playButton.setButtonAction([&handler, &isFight]() {
+	playButton.setButtonAction([&handler, &isFight, &actionOrder]() {
 		handler.stackScene("fightScreen");
 		isFight = true;
+		actionOrder = 0;
 		});
 
 	Button scoreButton("scoreButton", font, "SCORE", sf::Vector2f(192.5f, 50.0f), darkColor);
 	scoreButton.setPosition(sf::Vector2f(308.0f, 540.0f));
 
 	scoreButton.setButtonAction([&handler]() {
-		handler.stackScene("fightScreen");
+		handler.stackScene("scoreScreen");
 		});
 
 	Button quitButton("quitButton", font, "QUIT", sf::Vector2f(192.5f, 50.0f), darkColor);
@@ -65,37 +67,105 @@ int main() {
 
 
 	//------------------------------------------
+
+	Button backAScreen("backAScreen", font, "Main Menu", sf::Vector2f(192.5f, 50.0f), darkColor);
+	backAScreen.setPosition(sf::Vector2f(1000.0f, 600.0f));
+
+	backAScreen.setButtonAction([&handler, &isFight]() {
+		handler.popAllScenes();
+		handler.stackScene("mainMenu");
+		isFight = false;
+		});
+
+
 	Scene scoreScreen("scoreScreen");
 
+	TextObject scoreText1("score1", font, "");
+	scoreText1.setPosition(sf::Vector2f(109.0f, 50.0f));
+	scoreText1.setCharacterSize(26);
+	scoreText1.setFillColor(darkColor);
 
+	TextObject scoreText2("score2", font, "");
+	scoreText2.setPosition(sf::Vector2f(109.0f, 100.0f));
+	scoreText2.setCharacterSize(26);
+	scoreText2.setFillColor(darkColor);
 
-	std::vector<std::string> scores;
-	std::string score;
-	std::ifstream scoresFile("scores.txt");
-	if (!scoresFile.fail()) {
-		while (std::getline(scoresFile, score))
-		{
-			scores.push_back(score.c_str());
-		}
+	TextObject scoreText3("score3", font, "");
+	scoreText3.setPosition(sf::Vector2f(109.0f, 150.0f));
+	scoreText3.setCharacterSize(26);
+	scoreText3.setFillColor(darkColor);
+
+	TextObject scoreText4("score4", font, "");
+	scoreText4.setPosition(sf::Vector2f(109.0f, 200.0f));
+	scoreText4.setCharacterSize(26);
+	scoreText4.setFillColor(darkColor);
+
+	TextObject scoreText5("score5", font, "");
+	scoreText5.setPosition(sf::Vector2f(109.0f, 250.0f));
+	scoreText5.setCharacterSize(26);
+	scoreText5.setFillColor(darkColor);
+
+	int scoresInInt[5];
+
+	std::ifstream getScores("scores.cmgt");
+	if (!getScores.fail()) {
+		std::string line;
+
+		std::getline(getScores, line);
+		scoreText1.setText(line);
+		scoresInInt[0] = std::stoi(line);
+
+		std::getline(getScores, line);
+		scoreText2.setText(line);
+		scoresInInt[1] = std::stoi(line);
+
+		std::getline(getScores, line);
+		scoreText3.setText(line);
+		scoresInInt[2] = std::stoi(line);
+
+		std::getline(getScores, line);
+		scoreText4.setText(line);
+		scoresInInt[3] = std::stoi(line);
+
+		std::getline(getScores, line);
+		scoreText5.setText(line);
+		scoresInInt[4] = std::stoi(line);
+
+		getScores.close();
 	}
-	score = "";
-	for (int i = 0; i < scores.size(); i++)
-	{
-		score += scores[i] + '\n';
-	}
-	TextObject scoreText("scores", font, score);
-	scoreText.setPosition(sf::Vector2f(109.0f, 34.0f));
-	scoreText.setCharacterSize(26);
-	scoreText.setFillColor(darkColor);
 
 	Button eraseData("eraseData", font, "ERASE DATA", sf::Vector2f(192.5f, 50.0f), darkColor);
 	eraseData.setPosition(sf::Vector2f(108.0f, 540.0f));
 
-	eraseData.setButtonAction([&score]() {
-		score = "";
+	eraseData.setButtonAction([&scoreText1, &scoreText2, &scoreText3, &scoreText4, &scoreText5,&scoresInInt]() {
+		std::ofstream myfileWrite("scores.cmgt", std::ios::trunc);
+		myfileWrite << 0 << std::endl;
+		myfileWrite << 0 << std::endl;
+		myfileWrite << 0 << std::endl;
+		myfileWrite << 0 << std::endl;
+		myfileWrite << 0 << std::endl;
+
+		scoreText1.setText("0");
+		scoreText2.setText("0");
+		scoreText3.setText("0");
+		scoreText4.setText("0");
+		scoreText5.setText("0");
+
+		scoresInInt[0] = 0;
+		scoresInInt[1] = 0;
+		scoresInInt[2] = 0;
+		scoresInInt[3] = 0;
+		scoresInInt[4] = 0;
+
+		myfileWrite.close();
 		});
 	scoreScreen.addGameObject(eraseData);
-	scoreScreen.addGameObject(scoreText);
+	scoreScreen.addGameObject(scoreText1);
+	scoreScreen.addGameObject(scoreText2);
+	scoreScreen.addGameObject(scoreText3);
+	scoreScreen.addGameObject(scoreText4);
+	scoreScreen.addGameObject(scoreText5);
+	scoreScreen.addGameObject(backAScreen);
 	//------------------------------------------
 	/*Scene characterSelectionScreen("characterSelectionScreen");
 	Button play("play", font, "PLAY", sf::Vector2f(192.5f, 50.0f), darkColor);
@@ -139,8 +209,6 @@ int main() {
 	playerdefenseText.setCharacterSize(26);
 	playerdefenseText.setFillColor(darkColor);
 
-
-
 	TextObject enemyName("characterNameText", font, enemy.getName());
 	enemyName.setPosition(sf::Vector2f(109.0f, 34.0f));
 	enemyName.setCharacterSize(26);
@@ -163,7 +231,7 @@ int main() {
 
 	Button attack("attack", font, "attack", sf::Vector2f(192.5f, 50.0f), darkColor);
 	attack.setPosition(sf::Vector2f(808.0f, 400.0f));
-	attack.setButtonAction([&player, &enemy,&enemyhpText, &actionOrder]() {
+	attack.setButtonAction([&player, &enemy, &enemyhpText, &actionOrder]() {
 		player.attackCharacter(enemy);
 		enemyhpText.setText("Hp: " + std::to_string(enemy.getHP()));
 		actionOrder = 1;
@@ -174,7 +242,7 @@ int main() {
 	Button heal("heal", font, "heal", sf::Vector2f(192.5f, 50.0f), darkColor);
 	heal.setPosition(sf::Vector2f(808.0f, 450.0f));
 
-	heal.setButtonAction([&player,&playerhpText, &actionOrder]() {
+	heal.setButtonAction([&player, &playerhpText, &actionOrder]() {
 		player.heal();
 		playerhpText.setText("Hp: " + std::to_string(player.getHP()));
 		actionOrder = 1;
@@ -185,7 +253,7 @@ int main() {
 	Button defend("defend", font, "defend", sf::Vector2f(192.5f, 50.0f), darkColor);
 	defend.setPosition(sf::Vector2f(808.0f, 500.0f));
 
-	defend.setButtonAction([&player,&playerdefenseText, &actionOrder]() {
+	defend.setButtonAction([&player, &playerdefenseText, &actionOrder]() {
 		player.setDefense(player.getDefense() * 2);
 		playerdefenseText.setText("DEFENSE: " + std::to_string(player.getDefense()));
 		actionOrder = 1;
@@ -195,7 +263,7 @@ int main() {
 	Button prepare("prepare", font, "prepare", sf::Vector2f(192.5f, 50.0f), darkColor);
 	prepare.setPosition(sf::Vector2f(808.0f, 550.0f));
 
-	prepare.setButtonAction([&player,&playerattackText, &actionOrder]() {
+	prepare.setButtonAction([&player, &playerattackText, &actionOrder]() {
 		player.setAttack(player.getAttack() * 3);
 		playerattackText.setText("Attack: " + std::to_string(player.getAttack()));
 		actionOrder = 1;
@@ -218,6 +286,8 @@ int main() {
 	fightScreen.addGameObject(enemyhpText);
 	fightScreen.addGameObject(enemyattackText);
 	fightScreen.addGameObject(enemydefenseText);
+
+	fightScreen.addGameObject(backAScreen);
 	//----------------------------------------------------------------------------
 	//Scene characterScreen("characterScreen");
 	//Character character("Dude", "head.png", 10, 2, 2,false);
@@ -410,6 +480,36 @@ int main() {
 	//	characterScreen.render(window);
 	//	window.display();
 	//}
+
+	int score = 0;
+	int fightsWon = 0;
+
+	TextObject currentScoreText("attackText", font, "Score: " + std::to_string(score));
+	currentScoreText.setPosition(sf::Vector2f(848.0f, 290.0f));
+	currentScoreText.setCharacterSize(26);
+	currentScoreText.setFillColor(darkColor);
+
+	Scene gameOverScreen("gameOverScreen");
+	gameOverScreen.addGameObject(backAScreen);
+	gameOverScreen.addGameObject(currentScoreText);
+
+	Scene winFightScreen("winFightScreen");
+
+	Button nextFight("attack", font, "Next Fight", sf::Vector2f(192.5f, 50.0f), darkColor);
+	nextFight.setPosition(sf::Vector2f(808.0f, 400.0f));
+	nextFight.setButtonAction([&player, &enemy, &handler, &actionOrder]() {
+		enemy.randomizeStats();
+		actionOrder = 0;
+		handler.popScene();
+		});
+
+	winFightScreen.addGameObject(backAScreen);
+	winFightScreen.addGameObject(nextFight);
+
+
+	handler.addScene(gameOverScreen);
+	handler.addScene(winFightScreen);
+
 	while (window.isOpen()) {
 
 		sf::Event event;
@@ -421,12 +521,66 @@ int main() {
 				if (isFight) {
 					if (actionOrder == 0) {
 						handler.lastSceneHandleEvent(event, window);
-						//actionOrder = 1;
 					}
 					else {
 						if (isFight) {
-							enemy.doAction(player, enemyhpText,enemyattackText,enemydefenseText, playerhpText);
-							actionOrder = 0;
+							if (enemy.getHP() > 0) {
+								enemy.doAction(player, enemyhpText, enemyattackText, enemydefenseText, playerhpText);
+								actionOrder = 0;
+								if (player.getHP() <= 0) {
+									// Game Over
+									isFight = false;
+									for (int i = 5; i >= 0; i--)
+									{
+										if (scoresInInt[i] < score) {
+											scoresInInt[4] = score;
+											int ok = 1;
+											int aux = 0;
+											do {
+												ok = 1;
+												for (i = 0; i < 5; i++)
+												{
+													if (scoresInInt[i] < scoresInInt[i + 1]) {
+														aux = scoresInInt[i];
+														scoresInInt[i] = scoresInInt[i + 1];
+														scoresInInt[i + 1] = aux;
+														ok = 0;
+													}
+
+												}
+											} while (ok != 1);
+											std::ofstream myfileWrite("scores.cmgt", std::ios::trunc);
+											myfileWrite << scoresInInt[0] << std::endl;
+											myfileWrite << scoresInInt[1] << std::endl;
+											myfileWrite << scoresInInt[2] << std::endl;
+											myfileWrite << scoresInInt[3] << std::endl;
+											myfileWrite << scoresInInt[4] << std::endl;
+
+											scoreText1.setText(std::to_string(scoresInInt[0]));
+											scoreText2.setText(std::to_string(scoresInInt[1]));
+											scoreText3.setText(std::to_string(scoresInInt[2]));
+											scoreText4.setText(std::to_string(scoresInInt[3]));
+											scoreText5.setText(std::to_string(scoresInInt[4]));
+
+											myfileWrite.close();
+
+											break;
+										}
+
+									}
+									handler.stackScene("gameOverScreen");
+								}
+
+							}
+							else {
+								score += 50;
+								currentScoreText.setText("Score: " + std::to_string(score));
+								isFight = false;
+								fightsWon++;
+								handler.stackScene("winFightScreen");
+								//New Fight
+							}
+
 						}
 
 					}
