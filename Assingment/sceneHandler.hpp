@@ -14,6 +14,7 @@ public:
 public:
     void render(sf::RenderWindow& window) const;
     void update();
+    void lastSceneHandleEvent(sf::Event& event, sf::RenderWindow& window);
 
     void addScene(Scene& scene);
     void stackScene(std::string sceneName);

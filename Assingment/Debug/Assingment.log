@@ -1,5 +1,3 @@
 ﻿  main.cpp
-  scene.cpp
-  textObject.cpp
-  Generating Code...
+D:\school\year_2\term_1\C++\Assignment\Assingment\main.cpp(82,20): warning C4018: '<': signed/unsigned mismatch
   Assingment.vcxproj -> D:\school\year_2\term_1\C++\Assignment\Assingment\Debug\Assingment.exe
