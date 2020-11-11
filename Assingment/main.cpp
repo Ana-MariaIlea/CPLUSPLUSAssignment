@@ -286,6 +286,7 @@ int main(int argc, char* argv[]) {
 				}
 
 			}
+			score = 0;
 		}
 		});
 
