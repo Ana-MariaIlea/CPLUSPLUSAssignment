@@ -1,0 +1,3 @@
+The library used in the assignment is SFML (version 2.5.1).
+I have installed GLM and Easy Logging but I don't use them.
+The Executable file is in the Debug Folder.
