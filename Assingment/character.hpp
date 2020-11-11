@@ -1,12 +1,15 @@
 #pragma once
-
 #include <string>
 #include "textObject.hpp"
+#include<functional>
 
 class Character {
 private:
     std::string name;
     std::string spriteFile;
+    //std::vector<std::string> perks;
+   // std::vector<std::string> currentPerks;
+    //int maxNumberOfPerks = 0;
     int maxhp=0;
     int attack=0;
     int defense=0;
@@ -55,4 +58,12 @@ public:
     void setChance(int chanceForHealing, int chanceForDefence, int chanceForAttack);
 
     std::string getSpriteFile() const;
+
+    //void getHealthPerk();
+    //void lowerEnemyHealthPerk(Character character);
+    //void lowerEnemyAttackPerk(Character character);
+    //void lowerEnemyDefensePerk(Character character);
+    //void getPerk();
+    //void usePerks(Character& character);
+
 };

@@ -212,21 +212,7 @@ int main(int argc, char* argv[]) {
 	mainMenu.addGameObject(setDifficultyNormal);
 	mainMenu.addGameObject(setDifficultyHard);
 
-
-	//------------------------------------------
-
-	Button backAScreen("backAScreen", font, "Main Menu", sf::Vector2f(192.5f, 50.0f), darkColor);
-	backAScreen.setPosition(sf::Vector2f(1000.0f, 600.0f));
-
-	backAScreen.setButtonAction([&handler, &isFight]() {
-		handler.popAllScenes();
-		handler.stackScene("mainMenu");
-		isFight = false;
-		});
-
-
-	Scene scoreScreen("scoreScreen");
-
+	int scoresInInt[5];
 	TextObject scoreText1("score1", font, "");
 	scoreText1.setPosition(sf::Vector2f(109.0f, 50.0f));
 	scoreText1.setCharacterSize(26);
@@ -252,7 +238,62 @@ int main(int argc, char* argv[]) {
 	scoreText5.setCharacterSize(26);
 	scoreText5.setFillColor(darkColor);
 
-	int scoresInInt[5];
+	//------------------------------------------
+
+	Button backAScreen("backAScreen", font, "Main Menu", sf::Vector2f(192.5f, 50.0f), darkColor);
+	backAScreen.setPosition(sf::Vector2f(1000.0f, 600.0f));
+
+	backAScreen.setButtonAction([&handler, &isFight,&score,&scoresInInt,&scoreText1, &scoreText2, &scoreText3, &scoreText4, &scoreText5]() {
+		handler.popAllScenes();
+		handler.stackScene("mainMenu");
+		isFight = false;
+		if (score != 0) {
+			for (int i = 5; i >= 0; i--)
+			{
+				if (scoresInInt[i] < score) {
+					scoresInInt[4] = score;
+					int ok = 1;
+					int aux = 0;
+					do {
+						ok = 1;
+						for (i = 0; i < 5; i++)
+						{
+							if (scoresInInt[i] < scoresInInt[i + 1]) {
+								aux = scoresInInt[i];
+								scoresInInt[i] = scoresInInt[i + 1];
+								scoresInInt[i + 1] = aux;
+								ok = 0;
+							}
+
+						}
+					} while (ok != 1);
+					std::ofstream myfileWrite("scores.cmgt", std::ios::trunc);
+					myfileWrite << scoresInInt[0] << std::endl;
+					myfileWrite << scoresInInt[1] << std::endl;
+					myfileWrite << scoresInInt[2] << std::endl;
+					myfileWrite << scoresInInt[3] << std::endl;
+					myfileWrite << scoresInInt[4] << std::endl;
+
+					scoreText1.setText(std::to_string(scoresInInt[0]));
+					scoreText2.setText(std::to_string(scoresInInt[1]));
+					scoreText3.setText(std::to_string(scoresInInt[2]));
+					scoreText4.setText(std::to_string(scoresInInt[3]));
+					scoreText5.setText(std::to_string(scoresInInt[4]));
+
+					myfileWrite.close();
+
+					break;
+				}
+
+			}
+		}
+		});
+
+
+	Scene scoreScreen("scoreScreen");
+
+	
+
 
 	std::ifstream getScores("scores.cmgt");
 	if (!getScores.fail()) {
@@ -390,6 +431,9 @@ int main(int argc, char* argv[]) {
 	nextFight.setPosition(sf::Vector2f(808.0f, 400.0f));
 	nextFight.setButtonAction([&player, &enemy, &handler, &actionOrder, &enemyhpText, &enemyattackText, &enemydefenseText, &isFight]() {
 		enemy.randomizeStats();
+
+		//player.getPerk();
+		//player.usePerks(enemy);
 		enemyhpText.setText("Hp: " + std::to_string(enemy.getHP()));
 		enemyattackText.setText("Attack: " + std::to_string(enemy.getAttack()));
 		enemydefenseText.setText("Defense: " + std::to_string(enemy.getDefense()));
@@ -400,30 +444,52 @@ int main(int argc, char* argv[]) {
 
 	Button increaseHealth("attack", font, "Increase Health +50", sf::Vector2f(250.5f, 50.0f), darkColor);
 	increaseHealth.setPosition(sf::Vector2f(100.0f, 200.0f));
-	increaseHealth.setButtonAction([&player, &handler, &actionOrder, &playerhpText, &playerattackText, &playerdefenseText, &isFight]() {
-		player.setHP(player.geMaxHP() + 50);
-		playerhpText.setText("Hp: " + std::to_string(player.getHP()));
-		actionOrder = 0;
-		isFight = true;
-		handler.popScene();
+	increaseHealth.setButtonAction([&player, &handler, &actionOrder, &playerhpText, &playerattackText, &playerdefenseText, &isFight,
+		&enemyhpText, &enemyattackText, &enemydefenseText, &enemy]() {
+			enemy.randomizeStats();
+
+			player.setHP(player.geMaxHP() + 50);
+			playerhpText.setText("Hp: " + std::to_string(player.getHP()));
+			//player.getPerk();
+			//player.usePerks(enemy);
+			enemyhpText.setText("Hp: " + std::to_string(enemy.getHP()));
+			enemyattackText.setText("Attack: " + std::to_string(enemy.getAttack()));
+			enemydefenseText.setText("Defense: " + std::to_string(enemy.getDefense()));
+			actionOrder = 0;
+			isFight = true;
+			handler.popScene();
 		});
 	Button increaseAttack("attack", font, "Increase Attack +10", sf::Vector2f(250.5f, 50.0f), darkColor);
 	increaseAttack.setPosition(sf::Vector2f(400.0f, 200.0f));
-	increaseAttack.setButtonAction([&player, &handler, &actionOrder, &playerhpText, &playerattackText, &playerdefenseText, &isFight]() {
-		player.setAttack(player.getMaxAttack() + 10);
-		playerattackText.setText("Attack: " + std::to_string(player.getAttack()));
-		actionOrder = 0;
-		isFight = true;
-		handler.popScene();
+	increaseAttack.setButtonAction([&player, &handler, &actionOrder, &playerhpText, &playerattackText, &playerdefenseText, &isFight,
+		&enemyhpText, &enemyattackText, &enemydefenseText, &enemy]() {
+			enemy.randomizeStats();
+			player.setAttack(player.getMaxAttack() + 10);
+			playerattackText.setText("Attack: " + std::to_string(player.getAttack()));
+			//player.getPerk();
+			//player.usePerks(enemy);
+			enemyhpText.setText("Hp: " + std::to_string(enemy.getHP()));
+			enemyattackText.setText("Attack: " + std::to_string(enemy.getAttack()));
+			enemydefenseText.setText("Defense: " + std::to_string(enemy.getDefense()));
+			actionOrder = 0;
+			isFight = true;
+			handler.popScene();
 		});
 	Button increaseDefense("attack", font, "Increase Defense +5", sf::Vector2f(250.5f, 50.0f), darkColor);
 	increaseDefense.setPosition(sf::Vector2f(700.0f, 200.0f));
-	increaseDefense.setButtonAction([&player, &handler, &actionOrder, &playerhpText, &playerattackText, &playerdefenseText, &isFight]() {
-		player.setDefense(player.getMaxDefense() + 5);
-		playerdefenseText.setText("Defense: " + std::to_string(player.getDefense()));
-		actionOrder = 0;
-		isFight = true;
-		handler.popScene();
+	increaseDefense.setButtonAction([&player, &handler, &actionOrder, &playerhpText, &playerattackText, &playerdefenseText, &isFight,
+		&enemyhpText, &enemyattackText, &enemydefenseText, &enemy]() {
+			enemy.randomizeStats();
+			enemyhpText.setText("Hp: " + std::to_string(enemy.getHP()));
+			enemyattackText.setText("Attack: " + std::to_string(enemy.getAttack()));
+			enemydefenseText.setText("Defense: " + std::to_string(enemy.getDefense()));
+			player.setDefense(player.getMaxDefense() + 5);
+			//player.getPerk();
+			//player.usePerks(enemy);
+			playerdefenseText.setText("Defense: " + std::to_string(player.getDefense()));
+			actionOrder = 0;
+			isFight = true;
+			handler.popScene();
 		});
 
 	progressScreen.addGameObject(increaseHealth);
@@ -507,7 +573,6 @@ int main(int argc, char* argv[]) {
 							}
 							else {
 								score += 50;
-								std::cout << score << std::endl;
 								currentScoreText.setText("Score: " + std::to_string(score));
 								isFight = false;
 								fightsWon++;

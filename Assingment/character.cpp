@@ -8,7 +8,18 @@ Character::Character(std::string name, std::string spriteFile, int hp, int attac
 { }
 Character::Character(std::string name, std::string spriteFile) :
     name(name), spriteFile(spriteFile)
-{ }
+{
+    //this->perks.push_back("GetHealthEveryFight");
+    //this->perks.push_back("LowerEnemyHealthEveryFight");
+    //this->perks.push_back("LoweEnemyAttackEveryFight");
+    //this->perks.push_back("LowerEnemyDefenseEveryFight");
+    //this->currentPerks.push_back("LowerEnemyHealthEveryFight");
+    //printf("%s\n", this->currentPerks[0]);
+    //printf("%s\n", this->perks[0]);
+    //printf("%s\n", this->perks[1]);
+    //printf("%s\n", this->perks[2]);
+    //printf("%s\n", this->perks[3]);
+}
 Character::~Character() { }
 
 void Character::attackCharacter(Character& character) const {
@@ -120,4 +131,59 @@ void Character::setChance(int chanceForHealing, int chanceForDefence, int chance
     this->chanceForDefence = chanceForDefence;
     this->chanceForAttack = chanceForAttack;
 }
+
+//void Character::getHealthPerk() {
+//    this->heal();
+//    this->heal();
+//}
+//void Character::lowerEnemyHealthPerk(Character character) {
+//    attackCharacter(character);
+//
+//}
+//void Character::lowerEnemyAttackPerk(Character character) {
+//    character.setAttack(character.getMaxAttack() / 2);
+//}
+//void Character::lowerEnemyDefensePerk(Character character) {
+//    character.setDefense(character.getMaxDefense() / 2);
+//}
+//void Character::getPerk() {
+//    if (this->maxNumberOfPerks < 4) {
+//        int chance = rand() % 100;
+//        if (chance < 25) {
+//            int randomPerk = rand() % perks.size();
+//            if (!currentPerks.empty()) {
+//                if (!(std::find(currentPerks.begin(), currentPerks.end(), perks[randomPerk]) != currentPerks.end())) {
+//                    currentPerks.push_back(perks[randomPerk]);
+//                    maxNumberOfPerks++;
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//void Character::usePerks(Character &character) {
+//   // std::vector<std::string>::iterator perksIterator = currentPerks.begin();
+//    //while (perksIterator!=currentPerks.end())
+//    for (int i = 0; i < this->currentPerks.size(); i++)
+//
+//    {
+//       //std::string p= *perksIterator;
+//       // printf("%s\n", *perksIterator);
+//        printf("%s\n", currentPerks[i]);
+//        if (this->currentPerks[i] == "GetHealthEveryFight") {
+//            this->getHealthPerk();
+//        }
+//        if (this->currentPerks[i] == "LowerEnemyHealthEveryFight") {
+//            this->lowerEnemyHealthPerk(character);
+//        }
+//        if (this->currentPerks[i] == "LoweEnemyAttackEveryFight") {
+//            this->lowerEnemyAttackPerk(character);
+//        }
+//        if (this->currentPerks[i] == "LowerEnemyDefenseEveryFight") {
+//            this->lowerEnemyDefensePerk(character);
+//        }
+//
+//       // perksIterator++;
+//    }
+//}
 
