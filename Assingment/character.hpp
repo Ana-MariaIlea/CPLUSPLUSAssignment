@@ -48,7 +48,7 @@ public:
     void randomizeStats();
 
 
-    void doAction(Character &character,TextObject &hptext, TextObject &attackText, TextObject &defenseText, TextObject& characterHpText);
+    void doAction(Character &character,TextObject &hptext, TextObject &attackText, TextObject &defenseText, TextObject& characterHpText, TextObject& textTop, TextObject& textBottom);
 
     void heal();
     void defend();

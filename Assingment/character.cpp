@@ -100,21 +100,51 @@ void Character::randomizeStats() {
     this->activeHP= this->maxhp;
 }
 
-void Character::doAction(Character &character, TextObject& hptext, TextObject& attackText, TextObject& defenseText, TextObject &characterHpText) {
+void Character::doAction(Character &character, TextObject& hptext, TextObject& attackText, TextObject& defenseText, TextObject &characterHpText, TextObject& textTop, TextObject& textBottom) {
     int a = rand() % 100;
     if (a < chanceForHealing) {
         this->heal();
         hptext.setText("Hp: " + std::to_string(getHP()));
+        if (textBottom.getTextStr() == "") {
+            textBottom.setText("Enemy heals, health increases by 20 ");
+        }
+        else {
+            textTop.setText(textBottom.getTextStr());
+            textBottom.setText("Enemy heals, health increases by 20 ");
+        }
     }
     else if (a < chanceForDefence) {
         
         this->defend();
         defenseText.setText("Defense: " + std::to_string(getDefense()));
+        if (textBottom.getTextStr() == "") {
+            textBottom.setText("Enemy defends, new defense is: " + std::to_string(getDefense()));
+        }
+        else {
+            textTop.setText(textBottom.getTextStr());
+            textBottom.setText("Enemy defends, new defense is: " + std::to_string(getDefense()));
+        }
     }
     else if (a < chanceForAttack) {
        
         this->attackCharacter(character);
         characterHpText.setText("Hp: " + std::to_string(character.getHP()));
+        if (textBottom.getTextStr() == "") {
+            textBottom.setText("Enemy attacks player with damage: " + std::to_string(std::max(activeAttack - character.getDefense(), 10)));
+        }
+        else {
+            textTop.setText(textBottom.getTextStr());
+            textBottom.setText("Enemy attacks player with damage: " + std::to_string(std::max(activeAttack - character.getDefense(), 10)));
+        }
+    }
+    else {
+        if (textBottom.getTextStr() == "") {
+            textBottom.setText("Enemy does nothing");
+        }
+        else {
+            textTop.setText(textBottom.getTextStr());
+            textBottom.setText("Enemy does nothing ");
+        }
     }
 }
 
